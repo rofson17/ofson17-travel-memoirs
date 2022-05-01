@@ -1,0 +1,25 @@
+{
+  "name": "travel-memoirs-server",
+  "version": "1.0.0",
+  "description": "api for travel memoirs website",
+  "main": "app.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rofson17/ofson17-travel-memoirs.git"
+  },
+  "author": "Rofson Jame Abu Siam",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.20.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.0",
+    "express": "^4.17.3",
+    "mongoose": "^6.3.0"
+  }
+}
