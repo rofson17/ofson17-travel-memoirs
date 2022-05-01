@@ -11,15 +11,19 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/rofson17/ofson17-travel-memoirs.git"
+    "url": "git+https://github.com/rofson17/travel-memoirs.git"
   },
   "author": "Rofson Jame Abu Siam",
   "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rofson17/travel-memoirs/issues"
+  },
+  "homepage": "https://github.com/rofson17/travel-memoirs#readme",
   "dependencies": {
     "body-parser": "^1.20.0",
     "cors": "^2.8.5",
     "dotenv": "^16.0.0",
-    "express": "^4.17.3",
-    "mongoose": "^6.3.0"
+    "express": "^4.18.1",
+    "mongoose": "^6.3.1"
   }
 }

@@ -44,6 +44,7 @@ const Form = () => {
             text: 'Memory has been added',
             icon: 'success'
         })
+        setPostData({ username: '', title: '', message: '', tags: '', selectedFile: '' });
     }
 
 
