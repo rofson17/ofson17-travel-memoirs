@@ -1,35 +1,32 @@
-import React, { useState } from "react";
-import { TextField, Button, Typography, Paper } from "@material-ui/core";
-import { useDispatch } from "react-redux";
+import React, { useState, useEffect } from "react";
+import { TextField, Button, Typography, Paper, TextareaAutosize } from "@material-ui/core";
+import { useDispatch, useSelector } from "react-redux";
 import FileBase64 from 'react-file-base64';
 import swal from 'sweetalert';
 
 import useStyles from "./styles";
-import { newPost } from '../../action/posts'
+import { newPost, updatePost } from '../../action/posts'
 
 
 
-const Form = () => {
-    const [postData, setPostData] = useState({ username: '', title: '', message: '', tags: '', selectedFile: '' });
+const Form = ({ currentPostID, setCurrentPostID }) => {
+    const [postData, setPostData] = useState({ author: '', title: '', message: '', tags: [], selectedFile: '' });
     const styles = useStyles();
     const dispatch = useDispatch();
+    const post = useSelector((state) => currentPostID ? state.posts.find(p => p._id === currentPostID) : null);
 
+    useEffect(() => {
+        if (post) {
+            console.log(post);
+            setPostData(post)
+        }
+    }, [post]);
 
-    const handleInputEvent = e => {
-        const { name, value } = e.target;
-        setPostData(preValue => {
-            return {
-                ...preValue, [name]: value
-            }
-        });
-    }
 
     const submitForm = e => {
         e.preventDefault();
 
-        const { username, title, message, tags, selectedFile } = postData;
-
-        if (!username || !title || !message || !tags || !selectedFile) {
+        if (!postData.author || !postData.title || !postData.message || !postData.tags || !postData.selectedFile) {
             swal({
                 title: "Warning",
                 text: "Please enter a valid username",
@@ -38,28 +35,34 @@ const Form = () => {
             return;
         }
 
-        dispatch(newPost({ title: title.trim(), message: message, author: username.trim(), selectedFile: selectedFile, tags: tags.split(' ') }));
+        if (currentPostID)
+            dispatch(updatePost(currentPostID, postData));
+        else
+            dispatch(newPost(postData));
+
         swal({
             title: 'Success',
             text: 'Memory has been added',
             icon: 'success'
         })
-        setPostData({ username: '', title: '', message: '', tags: '', selectedFile: '' });
+
+        setCurrentPostID(null);
+        setPostData({ author: '', title: '', message: '', tags: '', selectedFile: '' });
     }
 
 
     return (
         <Paper className={styles.paper}>
             <form autoComplete="off" noValidate method="post" className={`${styles.root} ${styles.form}`} onSubmit={submitForm}>
-                <Typography variant="h6" >Make a Memnory</Typography>
+                <Typography variant="h6" >{currentPostID ? 'Edit' : 'Make'} a Memnory</Typography>
                 <TextField
-                    name="username"
+                    name="author"
                     variant="standard"
                     label="username"
                     fullWidth
                     className={styles.inputField}
-                    value={postData.username}
-                    onChange={handleInputEvent}
+                    value={postData.author}
+                    onChange={event => setPostData({ ...postData, author: event.target.value.trim() })}
                 />
                 <TextField
                     name="title"
@@ -68,7 +71,7 @@ const Form = () => {
                     fullWidth
                     className={styles.inputField}
                     value={postData.title}
-                    onChange={handleInputEvent}
+                    onChange={event => setPostData({ ...postData, title: event.target.value.trim() })}
                 />
                 <TextField
                     name="message"
@@ -77,7 +80,7 @@ const Form = () => {
                     fullWidth
                     className={styles.inputField}
                     value={postData.message}
-                    onChange={handleInputEvent}
+                    onChange={event => setPostData({ ...postData, message: event.target.value })}
                 />
                 <TextField
                     name="tags"
@@ -86,7 +89,7 @@ const Form = () => {
                     fullWidth
                     className={styles.inputField}
                     value={postData.tags}
-                    onChange={handleInputEvent}
+                    onChange={event => setPostData({ ...postData, tags: event.target.value.split(',') })}
                 />
                 <div className={styles.fileInput}>
                     <FileBase64 type='file' mutiple={false} onDone={({ base64 }) => setPostData({ ...postData, selectedFile: base64 })} />
