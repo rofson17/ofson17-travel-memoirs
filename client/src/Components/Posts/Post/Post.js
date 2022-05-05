@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, CardActions, CardContent, CardMedia, Button, Typography } from '@material-ui/core';
+import { Card, CardActions, CardContent, CardMedia, Button, Typography, Tooltip } from '@material-ui/core';
 import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
 import DeleteIcon from '@material-ui/icons/Delete';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
@@ -21,7 +21,9 @@ const Post = ({ post, setCurrentPostID }) => {
                 <Typography variant="body2" >{moment(post.date).fromNow()}</Typography>
             </div>
             <div className={styles.overlay2}>
-                <Button style={{ color: '#fff' }} size='small' onClick={() => { setCurrentPostID(post._id) }} > <MoreHorizIcon /> </Button>
+                <Tooltip title='Edit post' >
+                    <Button style={{ color: '#fff' }} size='small' onClick={() => { setCurrentPostID(post._id) }} > <MoreHorizIcon /> </Button>
+                </Tooltip>
             </div>
             <div className={styles.details}>
                 <Typography variant="body2" color='textSecondary' component='h2'>{post.tags.map((tag) => `#${tag} `)}</Typography>
@@ -31,8 +33,12 @@ const Post = ({ post, setCurrentPostID }) => {
                 <Typography variant='body2' color="textSecondary" component='p'>{post.message}</Typography>
             </CardContent>
             <CardActions className={styles.cardActions}>
-                <Button size="small" color='primary' onClick={() => { dispatch(likePost(post._id)) }}> <ThumbUpAltIcon fontSize='small' />&nbsp; Like &nbsp;{post.likeCount}</Button>
-                <Button size="small" color='secondary' onClick={() => { dispatch(deletePost(post._id)) }}> <DeleteIcon fontSize='small' />Delete </Button>
+                <Tooltip title='Like Post' >
+                    <Button size="small" color='primary' onClick={() => { dispatch(likePost(post._id)) }}> <ThumbUpAltIcon fontSize='small' />&nbsp; Like &nbsp;{post.likeCount}</Button>
+                </Tooltip>
+                <Tooltip title='Delete post'>
+                    <Button size="small" color='secondary' onClick={() => { dispatch(deletePost(post._id)) }}> <DeleteIcon fontSize='small' />Delete </Button>
+                </Tooltip>
             </CardActions>
         </Card >
     )

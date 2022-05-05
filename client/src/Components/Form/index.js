@@ -23,8 +23,8 @@ const Form = ({ currentPostID, setCurrentPostID }) => {
     }, [post]);
 
 
-    const submitForm = e => {
-        e.preventDefault();
+    const submitForm = event => {
+        event.preventDefault();
 
         if (!postData.author || !postData.title || !postData.message || !postData.tags || !postData.selectedFile) {
             swal({
@@ -62,7 +62,7 @@ const Form = ({ currentPostID, setCurrentPostID }) => {
                     fullWidth
                     className={styles.inputField}
                     value={postData.author}
-                    onChange={event => setPostData({ ...postData, author: event.target.value.trim() })}
+                    onChange={event => setPostData({ ...postData, author: event.target.value })}
                 />
                 <TextField
                     name="title"
@@ -71,7 +71,7 @@ const Form = ({ currentPostID, setCurrentPostID }) => {
                     fullWidth
                     className={styles.inputField}
                     value={postData.title}
-                    onChange={event => setPostData({ ...postData, title: event.target.value.trim() })}
+                    onChange={event => setPostData({ ...postData, title: event.target.value })}
                 />
                 <TextField
                     name="message"
