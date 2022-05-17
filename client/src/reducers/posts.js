@@ -1,4 +1,4 @@
-import { ADD_NEW, UPDATE, DELETE, LIKE, FETCH_ALL, FETCH_BY_SEARCH, START_LOADING, END_LOADING } from '../constants/actionType';
+import { ADD_NEW, UPDATE, DELETE, LIKE, FETCH_ALL, FETCH_POST, FETCH_BY_SEARCH, START_LOADING, END_LOADING } from '../constants/actionType';
 
 
 export default (state = { posts: [], isLoading: true }, action) => {
@@ -16,6 +16,8 @@ export default (state = { posts: [], isLoading: true }, action) => {
             };
         case FETCH_BY_SEARCH:
             return { ...state, posts: action.payload };
+        case FETCH_POST:
+            return { ...state, post: action.payload };
         case ADD_NEW:
             return { ...state, posts: [...state.posts, action.payload] };
         case UPDATE:

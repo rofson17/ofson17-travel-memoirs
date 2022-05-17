@@ -9,7 +9,8 @@ import { useSelector } from "react-redux";
 const Posts = ({ setCurrentPostID }) => {
     const sytles = useStyles();
     const { posts, isLoading } = useSelector(state => state.posts);
-    console.log(isLoading);
+
+    if (!posts.length && !isLoading) return 'No Posts exist';
 
     return isLoading ? (
         <div style={{ height: '70vh', display: "flex", justifyContent: "center", alignItems: "center" }}>

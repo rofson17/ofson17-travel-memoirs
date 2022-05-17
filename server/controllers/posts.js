@@ -20,6 +20,16 @@ export const getPosts = async (req, res) => {
     }
 }
 
+export const getPost = async (req, res) => {
+    const { id } = req.params;
+    try {
+        const post = await PostsMessage.findById(id);
+        res.status(200).json(post);
+    } catch (error) {
+        res.status(404).json({ error: error.message });
+    }
+}
+
 export const newPost = async (req, res) => {
     const post = req.body;
     const newPost = new PostsMessage({ ...post, author: req.userId, date: Date.now() });

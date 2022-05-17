@@ -22,7 +22,7 @@ const Home = () => {
 
     const [searchParams] = useSearchParams();
     const page = searchParams.get('page') || 1;
-    // const searchQuery = searchParams.get('searchQuery');
+    const searchQuery = searchParams.get('searchQuery');
 
     const searchPost = () => {
         if (searchInput.trim() || tags) {
@@ -60,9 +60,14 @@ const Home = () => {
                             <Button onClick={searchPost} color='primary' variant='contained'>Search</Button>
                         </AppBar>
                         <Form currentPostID={currentPostID} setCurrentPostID={setCurrentPostID} />
-                        <Paper className={styles.pagination} elevation={6}>
-                            <Pagination page={page} />
-                        </Paper>
+
+                        {(!searchQuery && !tags.length) && (
+
+                            <Paper className={styles.pagination} elevation={6}>
+                                <Pagination page={page} />
+                            </Paper>
+                        )}
+
                     </Grid>
                 </Grid>
             </Container>

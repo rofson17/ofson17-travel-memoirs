@@ -59,7 +59,7 @@ const Form = ({ currentPostID, setCurrentPostID }) => {
     }
 
     return (
-        <Paper className={styles.paper}>
+        <Paper className={styles.paper} elevation={6}>
             <form autoComplete="off" noValidate method="post" className={`${styles.root} ${styles.form}`} onSubmit={submitForm}>
                 <Typography variant="h6" >{currentPostID ? 'Edit' : 'Make'} a Memnory</Typography>
 

@@ -14,6 +14,7 @@ API.interceptors.request.use((req) => {
 
 // post memoirs
 export const fetchPosts = (page) => API.get(`/posts?page=${page}`);
+export const fetchPost = (id) => API.get(`/posts/${id}`);
 export const fetchPostsBySearch = (searchQuery) => API.get(`posts/search?searchQuery=${searchQuery.search || 'none'}&tags=${searchQuery.tags}`);
 export const newPost = (postData) => API.post('/posts', postData);
 export const updatePost = (id, updatePost) => API.patch(`posts/${id}`, updatePost);
