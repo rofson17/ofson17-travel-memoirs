@@ -8,36 +8,37 @@ import useStyles from "./styles";
 import { newPost, updatePost } from '../../action/posts'
 
 
-const initialPostData = { author: '', title: '', message: '', tags: [], selectedFile: '' };
+const initialPostData = { title: '', message: '', tags: [], selectedFile: '' };
 
 const Form = ({ currentPostID, setCurrentPostID }) => {
     const [postData, setPostData] = useState(initialPostData);
     const styles = useStyles();
     const dispatch = useDispatch();
+    const user = JSON.parse(localStorage.getItem('profile'));
     const post = useSelector((state) => currentPostID ? state.posts.find(p => p._id === currentPostID) : null);
+
 
     useEffect(() => {
         if (post)
             setPostData(post)
     }, [post]);
 
-
     const submitForm = event => {
         event.preventDefault();
 
-        if (!postData.author || !postData.title || !postData.message || !postData.tags || !postData.selectedFile) {
+        if (!postData.title || !postData.message || !postData.tags || !postData.selectedFile) {
             swal({
                 title: "Warning",
-                text: "Please enter a valid username",
+                text: "Please fill all input field",
                 icon: "warning",
             })
             return;
         }
 
-        if (currentPostID)
-            dispatch(updatePost(currentPostID, postData));
+        if (currentPostID === null)
+            dispatch(newPost({ ...postData, name: user?.result.name }));
         else
-            dispatch(newPost(postData));
+            dispatch(updatePost(currentPostID, { ...postData, name: user?.result.name }));
 
         swal({
             title: 'Success',
@@ -49,21 +50,26 @@ const Form = ({ currentPostID, setCurrentPostID }) => {
         setPostData(initialPostData);
     }
 
+    if (!user?.result.name) {
+        return (
+            <Paper className={styles.paper}>
+                <Typography variant="h6" align="center">Please sing in to create your own memoirs</Typography>
+            </Paper>
+        )
+    }
 
     return (
         <Paper className={styles.paper}>
             <form autoComplete="off" noValidate method="post" className={`${styles.root} ${styles.form}`} onSubmit={submitForm}>
                 <Typography variant="h6" >{currentPostID ? 'Edit' : 'Make'} a Memnory</Typography>
 
-                <TextField name="author" variant="standard" label="username" fullWidth className={styles.inputField} value={postData.author} onChange={event => setPostData({ ...postData, author: event.target.value })} />
-
-                <TextField name="title" variant="standard" label="Title" fullWidth
+                <TextField name="title" label="Title" fullWidth
                     className={styles.inputField} value={postData.title} onChange={event => setPostData({ ...postData, title: event.target.value })} />
 
-                <TextField name="tags" variant="standard" label="Tag" fullWidth className={styles.inputField}
+                <TextField name="tags" label="Tag" fullWidth className={styles.inputField}
                     value={postData.tags} onChange={event => setPostData({ ...postData, tags: event.target.value.split(',') })} />
 
-                <TextField name="message" variant="standard" label="Message" fullWidth multiline minRows={3} className={styles.inputField} value={postData.message} onChange={event => setPostData({ ...postData, message: event.target.value })} />
+                <TextField name="message" label="Message" fullWidth multiline minRows={3} className={styles.inputField} value={postData.message} onChange={event => setPostData({ ...postData, message: event.target.value })} />
 
                 <div className={styles.fileInput}>
                     <FileBase64 type='file' mutiple={false} onDone={({ base64 }) => setPostData({ ...postData, selectedFile: base64 })} />
